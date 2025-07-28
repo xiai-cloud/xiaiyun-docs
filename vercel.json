@@ -1,11 +1,6 @@
 {
   "buildCommand": "npm run docs:build",
   "outputDirectory": "docs/.vitepress/dist",
-  "functions": {
-    "api/login.js": {
-      "runtime": "@vercel/node@20"
-    }
-  },
   "rewrites": [
     {
       "source": "/((?!api/).*)",
