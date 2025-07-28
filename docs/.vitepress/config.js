@@ -5,6 +5,9 @@ export default defineConfig({
   description: '喜爱云团队技术文档中心',
   lang: 'zh-CN',
 
+  // GitHub Pages 部署配置
+  base: process.env.NODE_ENV === 'production' ? '/xiaiyun-docs/' : '/',
+
   markdown: {
     toc: { level: [1, 2, 3, 4, 5, 6] },
     anchor: { level: [1, 2, 3, 4, 5, 6] }
@@ -45,5 +48,32 @@ export default defineConfig({
       level: 'deep',
       label: '页面导航'
     }
-  }
+  },
+
+  // 自定义 head 标签，添加认证脚本
+  head: [
+    [
+      'script',
+      {},
+      `
+        // 认证检查脚本
+        (function() {
+          // 开发环境跳过认证
+          if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+            return;
+          }
+          
+          // 检查是否已认证
+          const isAuthenticated = localStorage.getItem('xiaiyun-docs-auth') === 'verified';
+          const currentPath = location.pathname;
+          
+          // 如果未认证且不在登录页面，跳转到登录页面
+          if (!isAuthenticated && !currentPath.includes('/auth.html')) {
+            const basePath = '/xiaiyun-docs';
+            location.href = basePath + '/auth.html';
+          }
+        })();
+      `
+    ]
+  ]
 })
