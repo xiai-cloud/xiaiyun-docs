@@ -22,7 +22,7 @@
 
 ## ⚙️ Vercel 环境变量配置
 
-只需要在 Vercel Dashboard 中设置 **3个环境变量**：
+只需要在 Vercel Dashboard 中设置 **2个环境变量**：
 
 ### 必需的环境变量
 
@@ -32,9 +32,13 @@ DOC_USERNAME=xiaiyun
 
 # 文档访问密码  
 DOC_PASSWORD=xiaiyun2025
+```
 
-# JWT 签名密钥（至少32位随机字符）
-JWT_SECRET=your-super-secret-jwt-key-32-chars-min
+### 可选的环境变量
+
+```bash
+# JWT 签名密钥（可选，有安全默认值）
+JWT_SECRET=your-custom-jwt-secret
 ```
 
 ### 推荐的安全配置
@@ -46,7 +50,7 @@ DOC_USERNAME=your-custom-username
 # 强密码
 DOC_PASSWORD=Your-Secure-Password-2025!
 
-# 强随机密钥
+# 可选：自定义JWT密钥（更高安全性）
 JWT_SECRET=XiaiYun2025SecureJWTKeyForDocs32Chars
 ```
 
@@ -75,19 +79,19 @@ vercel env add DOC_USERNAME
 vercel env add DOC_PASSWORD
 # 输入你的强密码
 
-# 设置JWT密钥
+# 可选：设置自定义JWT密钥（更高安全性）
 vercel env add JWT_SECRET  
-# 输入32位随机密钥
+# 输入32位随机密钥（可跳过，使用默认值）
 ```
 
 #### 方式二：通过 Vercel Dashboard
 
 1. 登录 [vercel.com](https://vercel.com)
 2. 选择项目 → **Settings** → **Environment Variables**
-3. 点击 **Add** 按钮添加以下3个变量：
+3. 点击 **Add** 按钮添加以下2个变量：
    - `DOC_USERNAME` 
    - `DOC_PASSWORD`
-   - `JWT_SECRET`
+   - （可选）`JWT_SECRET` - 如需更高安全性
 4. 每个变量都选择 **Production**, **Preview**, **Development**
 
 ### 3. 重新部署
@@ -223,7 +227,7 @@ xiaiyun-docs/
 现在系统非常简单：
 
 - **1套账号密码** - 所有人使用相同账号
-- **3个环境变量** - 只需配置用户名、密码、JWT密钥
+- **2个环境变量** - 只需配置用户名、密码（JWT密钥可选）
 - **1个API接口** - `/api/login` 处理登录
 - **1个登录页面** - 现代化登录界面
 

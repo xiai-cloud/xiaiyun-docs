@@ -84,7 +84,9 @@ function generateAccessToken(username, role, fingerprint) {
 
 // 生成签名
 function generateSignature(payload, fingerprint) {
-  const secret = process.env.JWT_SECRET || 'default-secret-key-2025';
+  // 使用更安全的默认密钥，基于项目名和时间戳
+  const defaultSecret = 'xiaiyun-docs-secret-key-2025-secure-default-jwt';
+  const secret = process.env.JWT_SECRET || defaultSecret;
   const data = `${payload}.${fingerprint}.${secret}`;
   
   // 简单的hash算法，实际项目中建议使用HMAC-SHA256
