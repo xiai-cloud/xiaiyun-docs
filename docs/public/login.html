@@ -302,10 +302,10 @@
     <script>
         // 配置
         const CONFIG = {
-            // 在实际部署时，这个应该指向你的 API 地址
-            API_BASE: 'https://your-domain.vercel.app/api',
+            // 使用相对路径，自动匹配当前域名
+            API_BASE: '/api',
             // 本地开发时的后备API
-            DEV_API_BASE: 'http://localhost:3000/api'
+            DEV_API_BASE: '/api'
         };
 
         // 全局变量
@@ -382,6 +382,8 @@
             hideMessage();
 
             try {
+                console.log('调用API:', getApiUrl('/login')); // 调试信息
+                
                 const response = await fetch(getApiUrl('/login'), {
                     method: 'POST',
                     headers: {
@@ -393,6 +395,12 @@
                         fingerprint: deviceFingerprint
                     })
                 });
+
+                console.log('响应状态:', response.status); // 调试信息
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
 
                 const data = await response.json();
 
@@ -435,10 +443,7 @@
 
         // 工具函数
         function getApiUrl(path) {
-            // 在生产环境中使用真实API，开发环境使用模拟API
-            if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-                return CONFIG.DEV_API_BASE + path;
-            }
+            // 统一使用相对路径
             return CONFIG.API_BASE + path;
         }
 
