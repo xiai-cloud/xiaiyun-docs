@@ -1,0 +1,26 @@
+{
+  "functions": {
+    "api/auth.js": {
+      "runtime": "nodejs18.x"
+    },
+    "api/verify.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "env": {
+    "PRIMARY_ACCESS_CODE": "@primary_access_code",
+    "DEV_ACCESS_CODE": "@dev_access_code", 
+    "VIEWER_ACCESS_CODE": "@viewer_access_code",
+    "JWT_SECRET": "@jwt_secret"
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
+      ]
+    }
+  ]
+}

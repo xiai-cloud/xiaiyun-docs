@@ -63,14 +63,21 @@ export default defineConfig({
             return;
           }
           
-          // 检查是否已认证
-          const isAuthenticated = localStorage.getItem('xiaiyun-docs-auth') === 'verified';
+          // 检查是否已认证（支持新旧两种认证方式）
+          const oldAuth = localStorage.getItem('xiaiyun-docs-auth') === 'verified';
+          const secureToken = localStorage.getItem('xiaiyun-docs-secure-token');
+          const tokenExpiry = localStorage.getItem('xiaiyun-docs-token-expiry');
+          
+          // 检查新的安全令牌
+          const secureAuth = secureToken && tokenExpiry && Date.now() < parseInt(tokenExpiry);
+          
+          const isAuthenticated = oldAuth || secureAuth;
           const currentPath = location.pathname;
           
-          // 如果未认证且不在登录页面，跳转到登录页面
-          if (!isAuthenticated && !currentPath.includes('/auth.html')) {
+          // 如果未认证且不在登录页面，跳转到安全认证页面
+          if (!isAuthenticated && !currentPath.includes('/auth-secure.html') && !currentPath.includes('/auth.html')) {
             const basePath = '/xiaiyun-docs';
-            location.href = basePath + '/auth.html';
+            location.href = basePath + '/auth-secure.html';
           }
         })();
       `

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -20,7 +21,7 @@
             justify-content: center;
             color: #333;
         }
-        
+
         .auth-container {
             background: white;
             padding: 3rem 2.5rem;
@@ -30,7 +31,7 @@
             width: 90%;
             text-align: center;
         }
-        
+
         .logo {
             width: 80px;
             height: 80px;
@@ -44,23 +45,23 @@
             color: white;
             font-weight: bold;
         }
-        
+
         h1 {
             color: #2c3e50;
             margin-bottom: 0.5rem;
             font-size: 1.8rem;
         }
-        
+
         p {
             color: #7f8c8d;
             margin-bottom: 2rem;
             line-height: 1.6;
         }
-        
+
         .input-group {
             margin-bottom: 2rem;
         }
-        
+
         label {
             display: block;
             text-align: left;
@@ -68,7 +69,7 @@
             color: #2c3e50;
             font-weight: 500;
         }
-        
+
         input[type="password"] {
             width: 100%;
             padding: 1rem;
@@ -78,14 +79,14 @@
             transition: all 0.3s ease;
             background: #f8f9fa;
         }
-        
+
         input[type="password"]:focus {
             outline: none;
             border-color: #667eea;
             background: white;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
-        
+
         .btn {
             width: 100%;
             padding: 1rem;
@@ -99,16 +100,16 @@
             transition: all 0.3s ease;
             margin-bottom: 1rem;
         }
-        
+
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
         }
-        
+
         .btn:active {
             transform: translateY(0);
         }
-        
+
         .error {
             color: #e74c3c;
             margin-top: 1rem;
@@ -116,11 +117,11 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        
+
         .error.show {
             opacity: 1;
         }
-        
+
         .contact-info {
             margin-top: 2rem;
             padding-top: 2rem;
@@ -128,16 +129,16 @@
             font-size: 0.85rem;
             color: #95a5a6;
         }
-        
+
         .loading {
             display: none;
         }
-        
+
         .btn.loading {
             background: #95a5a6;
             cursor: not-allowed;
         }
-        
+
         .btn.loading::after {
             content: '';
             display: inline-block;
@@ -149,11 +150,13 @@
             animation: spin 1s ease-in-out infinite;
             margin-left: 8px;
         }
-        
+
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
-        
+
         .success {
             color: #27ae60;
             margin-top: 1rem;
@@ -161,32 +164,33 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        
+
         .success.show {
             opacity: 1;
         }
     </style>
 </head>
+
 <body>
     <div class="auth-container">
         <div class="logo">喜</div>
         <h1>访问验证</h1>
         <p>此文档仅供内部开发人员访问，请输入访问码继续</p>
-        
+
         <form id="authForm">
             <div class="input-group">
                 <label for="accessCode">访问码</label>
                 <input type="password" id="accessCode" name="accessCode" placeholder="请输入访问码" required>
             </div>
-            
+
             <button type="submit" class="btn" id="submitBtn">
                 <span class="btn-text">验证并继续</span>
             </button>
-            
+
             <div class="error" id="errorMsg"></div>
             <div class="success" id="successMsg"></div>
         </form>
-        
+
         <div class="contact-info">
             <p>需要访问权限？请联系开发团队获取访问码</p>
             <p>⚡ 访问码有效期：永久有效（除非更换）</p>
@@ -196,18 +200,18 @@
     <script>
         // 访问码配置（实际部署时建议从环境变量或配置文件读取）
         const ACCESS_CODES = [
-            'xiaiyun2024',           // 主访问码
+            'xiaiyun2025',           // 主访问码
             'dev-team-access',       // 开发团队访问码
             'docs-viewer-2024'       // 文档查看者访问码
         ];
-        
+
         // 获取 DOM 元素
         const form = document.getElementById('authForm');
         const accessCodeInput = document.getElementById('accessCode');
         const submitBtn = document.getElementById('submitBtn');
         const errorMsg = document.getElementById('errorMsg');
         const successMsg = document.getElementById('successMsg');
-        
+
         // 检查是否已经通过验证
         if (localStorage.getItem('xiaiyun-docs-auth') === 'verified') {
             showSuccess('已验证身份，正在跳转...');
@@ -215,40 +219,40 @@
                 redirectToHome();
             }, 1000);
         }
-        
+
         // 表单提交处理
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
             handleAuth();
         });
-        
+
         // 回车键提交
-        accessCodeInput.addEventListener('keypress', function(e) {
+        accessCodeInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 handleAuth();
             }
         });
-        
+
         function handleAuth() {
             const inputCode = accessCodeInput.value.trim();
-            
+
             if (!inputCode) {
                 showError('请输入访问码');
                 return;
             }
-            
+
             showLoading();
-            
+
             // 模拟验证延迟，增强安全感
             setTimeout(() => {
                 if (ACCESS_CODES.includes(inputCode)) {
                     // 验证成功
                     localStorage.setItem('xiaiyun-docs-auth', 'verified');
                     localStorage.setItem('xiaiyun-docs-auth-time', Date.now().toString());
-                    
+
                     showSuccess('验证成功！正在跳转到文档...');
-                    
+
                     setTimeout(() => {
                         redirectToHome();
                     }, 1500);
@@ -261,46 +265,46 @@
                 hideLoading();
             }, 1200);
         }
-        
+
         function showLoading() {
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
             hideError();
             hideSuccess();
         }
-        
+
         function hideLoading() {
             submitBtn.classList.remove('loading');
             submitBtn.disabled = false;
         }
-        
+
         function showError(message) {
             errorMsg.textContent = message;
             errorMsg.classList.add('show');
             hideSuccess();
         }
-        
+
         function hideError() {
             errorMsg.classList.remove('show');
         }
-        
+
         function showSuccess(message) {
             successMsg.textContent = message;
             successMsg.classList.add('show');
             hideError();
         }
-        
+
         function hideSuccess() {
             successMsg.classList.remove('show');
         }
-        
+
         function redirectToHome() {
             const basePath = location.pathname.includes('/xiaiyun-docs/') ? '/xiaiyun-docs' : '';
             window.location.href = basePath + '/';
         }
-        
+
         // 防止复制粘贴访问码（可选的安全措施）
-        accessCodeInput.addEventListener('paste', function(e) {
+        accessCodeInput.addEventListener('paste', function (e) {
             setTimeout(() => {
                 if (accessCodeInput.value.length > 50) {
                     accessCodeInput.value = '';
@@ -308,37 +312,38 @@
                 }
             }, 100);
         });
-        
+
         // 页面焦点到输入框
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             accessCodeInput.focus();
         });
-        
+
         // 添加一些安全措施
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             // 禁用 F12 开发者工具（基础防护）
             if (e.key === 'F12') {
                 e.preventDefault();
                 return false;
             }
-            
+
             // 禁用 Ctrl+Shift+I
             if (e.ctrlKey && e.shiftKey && e.key === 'I') {
                 e.preventDefault();
                 return false;
             }
-            
+
             // 禁用 Ctrl+U 查看源码
             if (e.ctrlKey && e.key === 'u') {
                 e.preventDefault();
                 return false;
             }
         });
-        
+
         // 禁用右键菜单（基础防护）
-        document.addEventListener('contextmenu', function(e) {
+        document.addEventListener('contextmenu', function (e) {
             e.preventDefault();
         });
     </script>
 </body>
+
 </html>
