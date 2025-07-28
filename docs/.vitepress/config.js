@@ -5,8 +5,8 @@ export default defineConfig({
   description: '喜爱云团队技术文档中心',
   lang: 'zh-CN',
 
-  // GitHub Pages 部署配置
-  base: process.env.NODE_ENV === 'production' ? '/xiaiyun-docs/' : '/',
+  // Vercel 部署不需要 base path
+  base: '/',
 
   markdown: {
     toc: { level: [1, 2, 3, 4, 5, 6] },
@@ -68,8 +68,7 @@ export default defineConfig({
           
           // 如果未认证且不在登录页面，跳转到登录页面
           if (!isAuthenticated && !currentPath.includes('/login.html')) {
-            const basePath = location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? '' : '/xiaiyun-docs';
-            location.href = basePath + '/login.html';
+            location.href = '/login.html';
           }
         })();
       `
