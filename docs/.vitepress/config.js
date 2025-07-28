@@ -58,11 +58,6 @@ export default defineConfig({
       `
         // 认证检查脚本
         (function() {
-          // 开发环境跳过认证
-          if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-            return;
-          }
-          
           // 检查是否已登录
           const loginToken = localStorage.getItem('xiaiyun-docs-login-token');
           const tokenExpiry = localStorage.getItem('xiaiyun-docs-token-expiry');
@@ -73,7 +68,7 @@ export default defineConfig({
           
           // 如果未认证且不在登录页面，跳转到登录页面
           if (!isAuthenticated && !currentPath.includes('/login.html')) {
-            const basePath = '/xiaiyun-docs';
+            const basePath = location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? '' : '/xiaiyun-docs';
             location.href = basePath + '/login.html';
           }
         })();
