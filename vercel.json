@@ -1,16 +1,16 @@
 {
   "functions": {
-    "api/auth.js": {
-      "runtime": "nodejs18.x"
-    },
-    "api/verify.js": {
+    "api/login.js": {
       "runtime": "nodejs18.x"
     }
   },
   "env": {
-    "PRIMARY_ACCESS_CODE": "@primary_access_code",
-    "DEV_ACCESS_CODE": "@dev_access_code", 
-    "VIEWER_ACCESS_CODE": "@viewer_access_code",
+    "ADMIN_USERNAME": "@admin_username",
+    "ADMIN_PASSWORD": "@admin_password",
+    "DEV_USERNAME": "@dev_username",
+    "DEV_PASSWORD": "@dev_password", 
+    "VIEWER_USERNAME": "@viewer_username",
+    "VIEWER_PASSWORD": "@viewer_password",
     "JWT_SECRET": "@jwt_secret"
   },
   "headers": [
