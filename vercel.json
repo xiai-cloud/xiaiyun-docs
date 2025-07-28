@@ -5,12 +5,8 @@
     }
   },
   "env": {
-    "ADMIN_USERNAME": "@admin_username",
-    "ADMIN_PASSWORD": "@admin_password",
-    "DEV_USERNAME": "@dev_username",
-    "DEV_PASSWORD": "@dev_password", 
-    "VIEWER_USERNAME": "@viewer_username",
-    "VIEWER_PASSWORD": "@viewer_password",
+    "DOC_USERNAME": "@doc_username",
+    "DOC_PASSWORD": "@doc_password",
     "JWT_SECRET": "@jwt_secret"
   },
   "headers": [

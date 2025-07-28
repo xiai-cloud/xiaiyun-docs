@@ -276,31 +276,19 @@
         <div class="message" id="messageBox"></div>
 
         <div class="accounts-info" id="accountsInfo" style="display: none;">
-            <p style="margin-bottom: 1rem; font-weight: bold; color: #495057;">测试账号信息：</p>
+            <p style="margin-bottom: 1rem; font-weight: bold; color: #495057;">默认测试账号：</p>
             
             <div class="account-item">
-                <div class="account-role">🔑 管理员账号</div>
+                <div class="account-role">🔑 文档访问账号</div>
                 <div class="account-credentials">
-                    用户名: admin<br>
+                    用户名: xiaiyun<br>
                     密码: xiaiyun2025
                 </div>
             </div>
             
-            <div class="account-item">
-                <div class="account-role">👨‍💻 开发者账号</div>
-                <div class="account-credentials">
-                    用户名: developer<br>
-                    密码: dev123456
-                </div>
-            </div>
-            
-            <div class="account-item">
-                <div class="account-role">👀 查看者账号</div>
-                <div class="account-credentials">
-                    用户名: viewer<br>
-                    密码: view123456
-                </div>
-            </div>
+            <p style="margin-top: 1rem; font-size: 0.8rem; color: #6c757d;">
+                注：生产环境请修改为安全的账号密码
+            </p>
         </div>
 
         <div class="security-tips">
@@ -483,25 +471,17 @@
             // 模拟API响应
             window.mockApiResponse = function(url, data) {
                 if (url.includes('/login')) {
-                    // 模拟登录验证
-                    const validUsers = [
-                        { username: 'admin', password: 'xiaiyun2025', role: 'admin' },
-                        { username: 'developer', password: 'dev123456', role: 'developer' },
-                        { username: 'viewer', password: 'view123456', role: 'viewer' },
-                        { username: 'test', password: 'test123', role: 'viewer' } // 测试账号
-                    ];
+                    // 模拟登录验证 - 单一账号密码
+                    const validUsername = 'xiaiyun';
+                    const validPassword = 'xiaiyun2025';
                     
-                    const user = validUsers.find(u => 
-                        u.username === data.username && u.password === data.password
-                    );
-                    
-                    if (user) {
+                    if (data.username === validUsername && data.password === validPassword) {
                         return {
                             success: true,
                             accessToken: 'mock-access-token',
                             user: {
-                                username: user.username,
-                                role: user.role
+                                username: data.username,
+                                role: 'user'
                             },
                             expiresAt: Date.now() + (24 * 60 * 60 * 1000),
                             message: '登录成功'

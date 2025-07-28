@@ -24,29 +24,12 @@ export default async function handler(req, res) {
       });
     }
 
-    // 服务端存储的用户账号（建议使用环境变量）
-    const VALID_USERS = [
-      {
-        username: process.env.ADMIN_USERNAME || 'admin',
-        password: process.env.ADMIN_PASSWORD || 'xiaiyun2025',
-        role: 'admin'
-      },
-      {
-        username: process.env.DEV_USERNAME || 'developer',
-        password: process.env.DEV_PASSWORD || 'dev123456',
-        role: 'developer'
-      },
-      {
-        username: process.env.VIEWER_USERNAME || 'viewer',
-        password: process.env.VIEWER_PASSWORD || 'view123456',
-        role: 'viewer'
-      }
-    ];
+    // 服务端存储的单一账号密码
+    const VALID_USERNAME = process.env.DOC_USERNAME || 'xiaiyun';
+    const VALID_PASSWORD = process.env.DOC_PASSWORD || 'xiaiyun2025';
 
-    // 查找用户
-    const user = VALID_USERS.find(u => u.username === username && u.password === password);
-
-    if (!user) {
+    // 验证账号密码
+    if (username !== VALID_USERNAME || password !== VALID_PASSWORD) {
       // 延迟响应，防止暴力破解
       await new Promise(resolve => setTimeout(resolve, 2000));
       
@@ -57,15 +40,15 @@ export default async function handler(req, res) {
     }
 
     // 生成访问令牌
-    const accessToken = generateAccessToken(username, user.role, fingerprint);
+    const accessToken = generateAccessToken(username, 'user', fingerprint);
     const currentTime = Date.now();
 
     res.status(200).json({
       success: true,
       accessToken,
       user: {
-        username: user.username,
-        role: user.role
+        username: username,
+        role: 'user'
       },
       expiresAt: currentTime + (24 * 60 * 60 * 1000), // 24小时
       message: '登录成功，欢迎访问文档'
